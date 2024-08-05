@@ -39,3 +39,7 @@ window.onload = function() {
     getQuote(); // Get a quote when the page loads
     // playMusic(); // Uncomment to attempt auto-play
 };
+//For disable right click
+document.addEventListener("contextmenu",function(e){
+    e.preventDefault()
+},false)
