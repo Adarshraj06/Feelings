@@ -31,13 +31,27 @@ const quotes = [
     
 ];
 
+const recentQuotes = []; // Queue to store the indexes of the last 20 shown quotes
+const maxRecent = 20; // Max number of recent quotes to keep track of
+
 function getQuote() {
-    const randomIndex = Math.floor(Math.random() * quotes.length);
+    let randomIndex;
+    
+    // Keep generating a new index until it's not in the recentQuotes array
+    do {
+        randomIndex = Math.floor(Math.random() * quotes.length);
+    } while (recentQuotes.includes(randomIndex));
+
     const quote = quotes[randomIndex];
     document.getElementById('quote').innerHTML = quote;
-}
 
-function playMusic() {
+    // Add the current index to recentQuotes and maintain its length to maxRecent
+    recentQuotes.push(randomIndex);
+    if (recentQuotes.length > maxRecent) {
+        recentQuotes.shift(); // Remove the oldest quote index when the limit is exceeded
+    }
+
+    // Play music when a new quote is generated
     const audio = document.getElementById('background-music');
     audio.play().catch(error => console.log("Error playing audio:", error));
 }
@@ -47,7 +61,8 @@ window.onload = function() {
     getQuote(); // Get a quote when the page loads
     // playMusic(); // Uncomment to attempt auto-play
 };
-//For disable right click
-document.addEventListener("contextmenu",function(e){
-    e.preventDefault()
-},false)
+
+// For disabling right-click
+document.addEventListener("contextmenu", function(e){
+    e.preventDefault();
+}, false);
